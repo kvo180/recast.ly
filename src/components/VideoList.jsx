@@ -1,6 +1,6 @@
-var VideoList = ({videos}) => {
-  var videoListEntryArray = videos.map(function(video) {
-    return <VideoListEntry video={video} />;
+var VideoList = (props) => {
+  var videoListEntryArray = props.videos.map(function(video, index) {
+    return <VideoListEntry key={index} video={video} onClick={props.onClick}/>;
   });
   
   return <div className="video-list media">{videoListEntryArray}</div>;
