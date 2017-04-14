@@ -2,10 +2,32 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       videoList: window.exampleVideoData,
       currentVideo: window.exampleVideoData[0]
     };
+
+    this.handleVideoListEntryClick = this.handleVideoListEntryClick.bind(this);
+    this.getYouTubeVideos = this.getYouTubeVideos.bind(this);
+  }
+
+  componentDidMount() {
+    this.getYouTubeVideos('cute kittens');
+  }
+
+  getYouTubeVideos(query) {
+    var options = {
+      key: this.props.API_KEY,
+      query: query
+    }
+
+    this.props.searchYouTube(options, videos => {
+      this.setState({
+        videoList: videos,
+        currentVideo: videos[0]
+      }) 
+    });
   }
 
   handleVideoListEntryClick(video) {
@@ -16,13 +38,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Nav />
-        <div className="col-md-7">
+      <div className="container">
+        <Nav onSearchChangeHandler={this.getYouTubeVideos}/>
+        <div className="col-xs-12">
           <VideoPlayer video={this.state.currentVideo}/>
         </div>
-        <div className="col-md-5">
-          <VideoList videos={this.state.videoList} onClick={this.handleVideoListEntryClick.bind(this)}/>
+        <div className="col-xs-12">
+          <VideoList 
+            videos={this.state.videoList} 
+            onClickHandler={this.handleVideoListEntryClick}
+          />
         </div>
       </div>
     );  
